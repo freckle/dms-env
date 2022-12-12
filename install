@@ -1,0 +1,24 @@
+#!/bin/sh
+if [ "$(uname -s)" != Linux ]; then
+  echo "dms-env is only supported on Linux" >&2
+  exit 1
+fi
+
+bin=/usr/local/bin/dms-env
+src=https://releases.deadmanssnitch.com/field-agent/latest/dms_linux_amd64.tar.gz
+
+mkdir -p /opt/dms
+curl -L "$src" | tar -C /opt/dms -xvzf -
+
+cat >"$bin" <<'EOM'
+#!/bin/sh
+if [ -n "$DMS_TOKEN" ]; then
+  exec /opt/dms/dms $DMS_OPTIONS "$DMS_TOKEN" "$@"
+else
+  exec "$@"
+fi
+EOM
+chmod +x "$bin"
+
+echo "Installed dms[-env]"
+dms-env /opt/dms/dms --version

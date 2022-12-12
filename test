@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+docker buildx build . --load --tag freckle/dms-env-test --file - <<'EOM'
+FROM alpine
+RUN apk add --update curl
+COPY install /install
+RUN /install
+ENTRYPOINT ["dms-env"]
+EOM
+
+docker run --rm freckle/dms-env-test echo hi
+
+docker run --rm \
+  --env DMS_TOKEN=d351e8f84a \
+  --env DMS_OPTIONS=--verbose \
+  freckle/dms-env-test sh -c 'echo failing; false' || true
+
+docker run --rm \
+  --env DMS_TOKEN=d351e8f84a \
+  --env DMS_OPTIONS=--verbose \
+  freckle/dms-env-test sh -c 'echo succeeding; true'
