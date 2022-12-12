@@ -24,7 +24,7 @@ their own (or no) Snitches.
 ## Usage
 
 ```dockerfile
-RUN curl -L "https://raw.github.com/TODO" | sh
+RUN curl -L "https://raw.githubusercontent.com/freckle/dms-env/main/install" | sh
 ENTRYPOINT ["dms-env"]
 ```
 
