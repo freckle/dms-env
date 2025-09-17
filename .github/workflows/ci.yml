@@ -10,7 +10,7 @@ jobs:
     runs-on: cicd-prod-03-ubuntu-prod
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           cache: yarn
           node-version-file: '.nvmrc'
